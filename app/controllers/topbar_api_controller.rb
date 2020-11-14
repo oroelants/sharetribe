@@ -47,7 +47,7 @@ class TopbarApiController < ApplicationController
     # already have working language change links. This is a quick fix
     # and a better way to do this would be to handle it entirely on
     # the JS side inside the component.
-    props.delete(:locales)
+    # props.delete(:locales)
     props.delete(:marketplace)
     props
   end

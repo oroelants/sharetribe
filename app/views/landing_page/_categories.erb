@@ -5,9 +5,9 @@
 
 <section id="<%= section_id %>" class="categories__section categories__section--<%= bg_styles[:section_style_modifier] %>" style="<%= bg_styles[:background_image_style] %> <%= bg_styles[:background_color_style] %>">
   <div class="categories__content">
-    <h1 class="categories__title"><%= s["title"] %></h1>
+    <h1 class="categories__title"><%= s["title"][landing_page_locale] %></h1>
     <div class="categories__paragraph--markdown">
-      <%= render_markdown(s["paragraph"]) %>
+      <%= render_markdown(s["paragraph"][landing_page_locale]) %>
     </div>
 
     <div class="categories__categories">
@@ -25,7 +25,7 @@
     </div>
 
     <% if s["button_title"] %>
-      <a class="categories__button<%= bg_styles[:button_modifier] %> <%= section_id %>__categories__button<%= bg_styles[:button_modifier] %>" href="<%= s['button_path']['value'] %>"><%= s["button_title"]%></a>
+      <a class="categories__button<%= bg_styles[:button_modifier] %> <%= section_id %>__categories__button<%= bg_styles[:button_modifier] %>" href="<%= s['button_path']['value'][landing_page_locale] %>"><%= s["button_title"][landing_page_locale]%></a>
     <% end %>
   </div>
 </section>

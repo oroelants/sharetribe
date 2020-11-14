@@ -29,11 +29,11 @@
 %h3= t("admin.communities.footer.menu_links")
 #menu-links-table
   .row.topbar-menu-container-padding.visible-tablet
-    .col-10
-      .col-6
+    .col-11
+      .col-7
         = label_tag do
           = t("admin.communities.footer.title")
-      .col-6
+      .col-5
         = label_tag do
           = t("admin.communities.footer.url")
 
@@ -59,7 +59,7 @@
 %h3= t("admin.communities.footer.social_links")
 #menu-links-table
   .row.topbar-menu-container-padding.visible-tablet
-    .col-10
+    .col-11
       .col-6
         = label_tag do
           = t("admin.communities.footer.social.title")
@@ -75,4 +75,4 @@
 %h3= t("admin.communities.footer.footer_copyright")
 .row
   .col-12
-    = form.text_area :copyright
+    = render partial: "locale_input_textarea", locals: copyright_locals(:copyright, form)

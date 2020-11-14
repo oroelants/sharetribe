@@ -42,10 +42,10 @@ section_style_class = hero_style_variations[s["background_image_variation"]]
       <% end %>
 
       <% cta_button_type = s["cta_button_type"] %>
-      <% button_title = cta_button_type == LandingPageVersion::Section::Hero::BUTTON_TYPE_DEFAULT && s["button_title"].try(:[], "value") %>
+      <% button_title = cta_button_type == LandingPageVersion::Section::Hero::BUTTON_TYPE_DEFAULT && s["button_title"].try(:[], "value").try(:[], landing_page_locale) %>
       <% case cta_button_type %>
       <% when LandingPageVersion::Section::Hero::BUTTON_TYPE_BUTTON %>
-        <a class="hero__signup-button" href="<%= s["button_path"]["value"] %>"><%= s["button_title"]["value"] %></a>
+        <a class="hero__signup-button" href="<%= s["button_path"]["value"][landing_page_locale] %>"><%= s["button_title"]["value"][landing_page_locale] %></a>
       <% when LandingPageVersion::Section::Hero::BUTTON_TYPE_NONE %>
       <% else %>
         <% search_mode = s["variation"]["value"] %>

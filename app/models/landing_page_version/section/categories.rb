@@ -67,18 +67,21 @@ module LandingPageVersion::Section
       :id,
       :kind,
       :previous_id,
-      :title,
-      :paragraph,
-      :button_title,
-      :button_path_string,
       :cta_enabled,
-      :button_title,
-      :button_path_string,
       :background_style,
       :background_color_string,
       :background_image_variation,
       :categories_attributes => LandingPageVersion::Section::Categories::Category::ATTRIBUTES
     ]
+
+    LOCALIZED_PARAMS = [
+      :title,
+      :paragraph,
+      :button_title,
+      :button_path_string,
+      :cta_button_text,
+      :cta_button_url
+    ].freeze
 
     attr_accessor(*(ATTRIBUTES + HELPER_ATTRIBUTES))
 
@@ -156,8 +159,11 @@ module LandingPageVersion::Section
         new(content_section)
       end
 
-      def permitted_params
-        PERMITTED_PARAMS
+      def permitted_params(locales)
+        localized_params = LOCALIZED_PARAMS.map {|param|
+          { param => locales }
+        }
+        PERMITTED_PARAMS + localized_params
       end
     end
   end

@@ -12,7 +12,7 @@
       <div id="<%= section_id%>__video__youtube-overlay" class="video__youtube-overlay video__youtube-overlay--inactive video__youtube-overlay--hover-animation"></div>
       <div id="<%= section_id%>__video__youtube-controls" class="video__youtube-controls">
         <svg id="<%= section_id %>__video__youtube-watch-video-icon" class="video__youtube-watch-video-icon" width="63" height="63" viewBox="47 -1 63 63" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round" stroke="#FFF" stroke-width="2"><path d="M108 30c0 16.57-13.433 30-30 30-16.57 0-30-13.43-30-30S61.43 0 78 0c16.567 0 30 13.43 30 30z"/><path d="M68.87 41.74V18.26L92.347 30z"/></g></svg>
-        <span id="<%= section_id %>__video__youtube-watch-video-text" class="video__youtube-watch-video-text"><%= s["text"] %></span>
+        <span id="<%= section_id %>__video__youtube-watch-video-text" class="video__youtube-watch-video-text"><%= s["text"][landing_page_locale] %></span>
       </div>
     </div>
   </div>
@@ -29,7 +29,7 @@
    var inactive = true;
 
    var player = new YT.Player('<%= section_id %>__video__youtube-player', {
-     videoId: '<%= s["youtube_video_id"] %>',
+     videoId: '<%= s["youtube_video_id"][landing_page_locale] %>',
      playerVars: {
        controls: 0,
        modestbranding: 1,
@@ -37,7 +37,7 @@
        showinfo: 0,
        autoplay: <%= autoplay ? 1 : 0 %>,
        loop: 1,
-       playlist: '<%= s["youtube_video_id"] %>'
+       playlist: '<%= s["youtube_video_id"][landing_page_locale] %>'
      },
      events: {
        onReady: onReady,

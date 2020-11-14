@@ -65,14 +65,14 @@
               <img src="<%= s['logo']['value'] %>" />
             <% end %>
             <div class="footer__copyrights--markdown">
-              <%= render_markdown(s['copyright']) %>
+              <%= render_markdown(s['copyright'][landing_page_locale]) %>
             </div>
           </div>
           <% if has_links %>
             <% s['links'].each_slice(5) do |links| %>
               <ul class="footer__link-list">
                 <% links.each do |link| %>
-                  <li class="footer__link-list-item"><a class="footer__link" href="<%= link['href']['value'] %>"><%= link["label"] %></a></li>
+                  <li class="footer__link-list-item"><a class="footer__link" href="<%= link['href']['value'][landing_page_locale] %>"><%= link["label"][landing_page_locale] %></a></li>
                 <% end %>
               </ul>
             <% end %>
@@ -83,7 +83,7 @@
       <% if has_links %>
         <ul class="footer__link-list">
           <% s['links'].each do |link| %>
-            <li class="footer__link-list-item"><a class="footer__link" href="<%= link['href']['value'] %>"><%= link["label"] %></a></li>
+            <li class="footer__link-list-item"><a class="footer__link" href="<%= link['href']['value'][landing_page_locale] %>"><%= link["label"][landing_page_locale] %></a></li>
           <% end %>
         </ul>
       <% end %>
@@ -109,7 +109,7 @@
     <hr class="footer__separator" />
 
     <div class="footer__copyrights--markdown">
-      <%= render_markdown(s['copyright']) %>
+      <%= render_markdown(s['copyright'][landing_page_locale]) %>
     </div>
   </div>
 </footer>

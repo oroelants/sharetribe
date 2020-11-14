@@ -35,14 +35,28 @@ module LandingPageVersion::Section
 
     EXTRA_PERMITTED_PARAMS = [
       :cta_enabled,
-      :button_title,
-      :button_path_string,
       :background_style,
       :background_color_string,
       :background_image_variation,
       :multi_columns,
-      :columns => [ :icon, :title, :paragraph, :button_title, :button_path => [:value] ]
+      :columns => [ :icon, :title, :paragraph, :button_title, :button_path_string ]
     ]
+
+    EXTRA_LOCALIZED_PARAMS = [
+      :button_title,
+      :button_path_string
+    ].freeze
+
+    ENCLOSED_LOCALIZED_PARAMS = [
+      :columns
+    ].freeze
+
+    COLUMN_LOCALIZED_PARAMS = [
+      :title,
+      :paragraph,
+      :button_title,
+      :button_path_string
+    ].freeze
 
     def initialize(attributes={})
       attributes = attributes.is_a?(Hash) ? attributes : attributes.to_unsafe_hash
@@ -86,8 +100,34 @@ module LandingPageVersion::Section
     end
 
     class << self
-      def permitted_params
-        LandingPageVersion::Section::Info::PERMITTED_PARAMS + EXTRA_PERMITTED_PARAMS
+      def permitted_params(locales)
+        localized_params = EXTRA_LOCALIZED_PARAMS.map {|param|
+          { param => locales }
+        }
+        enclosed_localized_params = {}
+        COLUMN_LOCALIZED_PARAMS.each {|param|
+          enclosed_localized_params[param] = { param => locales }
+        }
+
+        permitted_params = (LandingPageVersion::Section::Info.permitted_params(locales) + EXTRA_PERMITTED_PARAMS).map {|p|
+          if p.is_a?(Hash) && !(l_params = p.keys & ENCLOSED_LOCALIZED_PARAMS).empty?
+            r = {}
+            l_params.each {|lp_key|
+              s = p[lp_key].map {|l|
+                if enclosed_localized_params.key?(l)
+                  enclosed_localized_params[l]
+                else
+                  l
+                end
+              }
+              r = r.merge({lp_key => s})
+            }
+            r
+          else
+            p
+          end
+        }
+        permitted_params + localized_params
       end
     end
   end

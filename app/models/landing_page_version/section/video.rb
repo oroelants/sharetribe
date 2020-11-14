@@ -16,8 +16,6 @@ module LandingPageVersion::Section
       :kind,
       :variation,
       :previous_id,
-      :text,
-      :youtube_video_id,
       :autoplay
     ].freeze
 
@@ -31,6 +29,11 @@ module LandingPageVersion::Section
       text: nil,
       autoplay: false
     }
+
+    LOCALIZED_PARAMS = [
+      :text,
+      :youtube_video_id
+    ].freeze
 
     AUTOPLAY_NO = 'no'.freeze
     AUTOPLAY_MUTED = 'muted'.freeze
@@ -72,8 +75,11 @@ module LandingPageVersion::Section
         new(content_section)
       end
 
-      def permitted_params
-        PERMITTED_PARAMS
+      def permitted_params(locales)
+        localized_params = LOCALIZED_PARAMS.map {|param|
+          { param => locales }
+        }
+        PERMITTED_PARAMS + localized_params
       end
     end
   end

@@ -46,7 +46,7 @@ module TopbarHelper
         links: links,
         limit_priority_links: community.configuration.limit_priority_links
       },
-      locales: landing_page ? nil : locale_props(community, I18n.locale, path_after_locale_change, user.present?),
+      locales: locale_props(community, I18n.locale, path_after_locale_change, user.present?),
       avatarDropdown: {
         avatar: {
           image: avatar_image,

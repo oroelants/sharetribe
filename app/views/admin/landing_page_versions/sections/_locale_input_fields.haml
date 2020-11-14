@@ -1,0 +1,17 @@
+- # locals:  header, available_locales, input_name, translations, info_text
+- # optional locals: maxlength
+.translation-wrapper
+  - if defined?(header) && header.present?
+    .input-header
+      = header
+  - if defined?(info_text)
+    %div{id: defined?(info_text_id) ? info_text_id : nil, class: show_info_text ? 'hidden' : ''}
+      = render :partial => "layouts/info_text", :locals => { :text => info_text.html_safe }
+
+  - available_locales.each do |locale_name, locale_key|
+    .row
+      - if show_locale = (available_locales.size > 1 && !(defined?(hide_locale) && hide_locale))
+        .name-locale-label.col-2
+          = label_tag "#{input_name}[#{locale_key}]", locale_name, class: input_classes + ' label'
+      .name-locale-text_field{class: show_locale ? 'col-10' : 'col-12'}
+        = text_field_tag "#{input_name}[#{locale_key}]", value.try(:[], locale_key), class: input_classes, placeholder: defined?(placeholder) ? placeholder : "", required: defined?(required) ? required : nil, url: defined?(url) ? url : nil, maxlength: defined?(maxlength) ? maxlength : nil

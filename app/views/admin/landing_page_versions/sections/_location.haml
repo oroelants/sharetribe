@@ -27,11 +27,11 @@
         .row
           %span.hidden-tablet
             = t(".title")
-          = f.text_field :title, placeholder: t(".title_placeholder")
+          = render partial: "locale_input_fields", locals: locations_locals(:title, f.index, f, t(".title_placeholder"))
         .row
           %span.hidden-tablet
             = t(".url")
-          = f.text_field :url, placeholder: t(".url_placeholder"), url: true
+          = render partial: "locale_input_fields", locals: locations_locals(:url, f.index, f, t(".url_placeholder"), true)
 
 
   .col-2.menu-links-actions

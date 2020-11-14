@@ -56,7 +56,7 @@ module CustomLandingPage
     end
 
     def section_params
-      upload_assets(params.require(:section).permit(section_factory_class.permitted_params))
+      upload_assets(params.require(:section).permit(section_factory_class.permitted_params(community.locales)))
     end
 
     def section_factory_class

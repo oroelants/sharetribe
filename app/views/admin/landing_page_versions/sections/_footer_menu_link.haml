@@ -1,25 +1,20 @@
-- locale_value = @current_community.default_locale
 .row.without-margin.menu-link-sortable.footer-menu-container{id: f.index, data: {"field-id": f.index, new: f.object.new_record? ? '1' : nil}}
-  .col-10
+  .col-11
     = f.hidden_field :id
     = f.hidden_field :sort_priority, class: 'sort-priority'
     = f.hidden_field :_destroy, class: 'destroy-record'
     .row
-      .col-6
+      .col-7
         %span.hidden-tablet
           = t("admin.communities.footer.title")
-        = f.text_field :title,  required: true, maxlength: 255,
-          placeholder: t("admin.communities.footer.title_placeholder", locale: locale_value),
-          disabled: disabled
+        = render partial: "locale_input_fields", locals: footer_links_locals(:title, f.index, f, t("admin.communities.footer.title_placeholder"), nil, true, false)
 
-      .col-6
+      .col-5
         %span.hidden-tablet
           = t("admin.communities.footer.url")
-        = f.text_field :url, required: true, maxlength: 255, url: true,
-          placeholder: t("admin.communities.footer.url_placeholder", locale: locale_value),
-          disabled: disabled
+        = render partial: "locale_input_fields", locals: footer_links_locals(:url, f.index, f, t("admin.communities.footer.url_placeholder"), true, true, true)
 
-  .col-2.menu-links-actions
+  .col-1.menu-links-actions
     - link_class = "menu-link-without-locale-remove"
 
     = link_to "#", class: "menu-link-remove #{link_class}", tabindex: "-1" do

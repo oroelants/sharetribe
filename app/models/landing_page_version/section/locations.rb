@@ -13,6 +13,19 @@ module LandingPageVersion::Section
         :url
       ]
 
+      PERMITTED_PARAMS = [
+        :id,
+        :asset_id,
+        :sort_priority,
+        :_destroy,
+        :image
+      ]
+
+      LOCALIZED_PARAMS = [
+        :title,
+        :url
+      ].freeze
+
       attr_accessor(*ATTRIBUTES)
 
       def new_record?
@@ -83,19 +96,24 @@ module LandingPageVersion::Section
       :id,
       :kind,
       :previous_id,
-      :title,
-      :paragraph,
-      :button_title,
-      :button_path_string,
       :cta_enabled,
-      :button_title,
-      :button_path_string,
       :background_style,
       :background_color_string,
       :background_image_variation,
       :location_color_hover,
       :locations_attributes => LandingPageVersion::Section::Locations::Location::ATTRIBUTES
     ]
+
+    LOCALIZED_PARAMS = [
+      :title,
+      :paragraph,
+      :button_title,
+      :button_path_string,
+    ].freeze
+
+    ENCLOSED_LOCALIZED_PARAMS = [
+      :locations_attributes
+    ].freeze
 
     attr_accessor(*(ATTRIBUTES + HELPER_ATTRIBUTES))
 
@@ -172,8 +190,34 @@ module LandingPageVersion::Section
         new(content_section)
       end
 
-      def permitted_params
-        PERMITTED_PARAMS
+      def permitted_params(locales)
+        localized_params = LOCALIZED_PARAMS.map {|param|
+          { param => locales }
+        }
+        enclosed_localized_params = {}
+        LandingPageVersion::Section::Locations::Location::LOCALIZED_PARAMS.each {|param|
+          enclosed_localized_params[param] = { param => locales }
+        }
+
+        permitted_params = PERMITTED_PARAMS.map {|p|
+          if p.is_a?(Hash) && !(l_params = p.keys & ENCLOSED_LOCALIZED_PARAMS).empty?
+            r = {}
+            l_params.each {|lp_key|
+              s = p[lp_key].map {|l|
+                if enclosed_localized_params.key?(l)
+                  enclosed_localized_params[l]
+                else
+                  l
+                end
+              }
+              r = r.merge({lp_key => s})
+            }
+            r
+          else
+            p
+          end
+        }
+        permitted_params + localized_params
       end
     end
   end

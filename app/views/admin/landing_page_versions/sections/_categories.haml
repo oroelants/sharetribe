@@ -7,12 +7,10 @@
 = render 'content'
 .row
   .col-12
-    = form.label :title
-    = form.text_field :title
+    = render partial: "locale_input_fields", locals: common_locals(:title, form)
 .row
   .col-12
-    = form.label :paragraph
-    = form.text_area :paragraph
+    = render partial: "locale_input_textarea", locals: common_locals(:paragraph, form)
 
 = render partial: 'cta_button', locals: {form: form, presenter: presenter}
 

@@ -15,19 +15,19 @@
 
     <% case s["kind"] %>
     <% when "hero" %>
-      <%= render partial: "hero", locals: {section_id: section_id, s: s, community_context: community_context} %>
+      <%= render partial: "hero", locals: {landing_page_locale: landing_page_locale, section_id: section_id, s: s, community_context: community_context} %>
     <% when "footer" %>
-      <%= render partial: "footer", locals: {section_id: section_id, s: s} %>
+      <%= render partial: "footer", locals: {landing_page_locale: landing_page_locale, section_id: section_id, s: s} %>
     <% when "info" %>
-      <%= render partial: "info", locals: {section_id: section_id, s: s, second_wo_background: second_wo_background } %>
+      <%= render partial: "info", locals: {landing_page_locale: landing_page_locale, section_id: section_id, s: s, second_wo_background: second_wo_background } %>
     <% when "categories" %>
-      <%= render partial: "categories", locals: {section_id: section_id, s: s, second_wo_background: second_wo_background} %>
+      <%= render partial: "categories", locals: {landing_page_locale: landing_page_locale, section_id: section_id, s: s, second_wo_background: second_wo_background} %>
     <% when "locations" %>
-      <%= render partial: "locations", locals: {section_id: section_id, s: s, second_wo_background: second_wo_background} %>
+      <%= render partial: "locations", locals: {landing_page_locale: landing_page_locale, section_id: section_id, s: s, second_wo_background: second_wo_background} %>
     <% when "listings" %>
-      <%= render partial: "listings", locals: {section_id: section_id, s: s, second_wo_background: second_wo_background} %>
+      <%= render partial: "listings", locals: {landing_page_locale: landing_page_locale, section_id: section_id, s: s, second_wo_background: second_wo_background} %>
     <% when "video" %>
-      <%= render partial: "video", locals: {section_id: section_id, s: s} %>
+      <%= render partial: "video", locals: {landing_page_locale: landing_page_locale, section_id: section_id, s: s} %>
     <% end %>
 
   <% end # sections#each %>
@@ -73,7 +73,11 @@
   </style>
   <%= @current_community.custom_head_script.to_s.html_safe %>
 </head>
+<% if sections.any? { |s| s["section"]["kind"] == "video" && s["section"]["variation"] == "youtube" } %>
 <body onload="BrowserDetectVideoAutoplay()">
+<% else %>
+<body>
+<% end %>
 
   <% if topbar[:enabled] %>
   <div id="topbar-placeholder" class="topbar-placeholder"> </div>

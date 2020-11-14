@@ -43,6 +43,11 @@ module LandingPageVersion::Section
         :_destroy
       ]
 
+      LOCALIZED_PARAMS = [
+        :title,
+        :url
+      ].freeze
+
       attr_accessor(*ATTRIBUTES)
 
       def new_record?
@@ -103,6 +108,14 @@ module LandingPageVersion::Section
       :copyright,
       :social_attributes => LandingPageVersion::Section::Footer::SocialLink::ATTRIBUTES,
       :links_attributes => LandingPageVersion::Section::Footer::MenuLink::ATTRIBUTES,
+    ].freeze
+
+    LOCALIZED_PARAMS = [
+      :copyright
+    ].freeze
+
+    ENCLOSED_LOCALIZED_PARAMS = [
+      :links_attributes
     ].freeze
 
     attr_accessor(*(ATTRIBUTES + HELPER_ATTRIBUTES))
@@ -199,8 +212,34 @@ module LandingPageVersion::Section
         new(content_section)
       end
 
-      def permitted_params
-        PERMITTED_PARAMS
+      def permitted_params(locales)
+        localized_params = LOCALIZED_PARAMS.map {|param|
+          { param => locales }
+        }
+        enclosed_localized_params = {}
+        LandingPageVersion::Section::Footer::MenuLink::LOCALIZED_PARAMS.each {|param|
+          enclosed_localized_params[param] = { param => locales }
+        }
+
+        permitted_params = PERMITTED_PARAMS.map {|p|
+          if p.is_a?(Hash) && !(l_params = p.keys & ENCLOSED_LOCALIZED_PARAMS).empty?
+            r = {}
+            l_params.each {|lp_key|
+              s = p[lp_key].map {|l|
+                if enclosed_localized_params.key?(l)
+                  enclosed_localized_params[l]
+                else
+                  l
+                end
+              }
+              r = r.merge({lp_key => s})
+            }
+            p.merge(r)
+          else
+            p
+          end
+        }
+        permitted_params + localized_params
       end
     end
   end

@@ -28,6 +28,8 @@ class LandingPageController < ActionController::Metal
   #
   include Rails.application.routes.url_helpers
 
+  include CustomLandingPageHelper
+
   helper CLP::MarkdownHelper
   helper CLP::BackgroundHelper
 
@@ -46,9 +48,26 @@ class LandingPageController < ActionController::Metal
     is_private = com.private?
     user_logged_in = user(request).present?
     cta = is_private && !user_logged_in ? "signup" : "search" # cta: Call to action
-    default_locale = community(request).default_locale
+    default_locale = com.default_locale
+    user_locale = Maybe(user(request)).locale.or_else(nil)
+    guessed_locale = params[:locale]
+    if guessed_locale.nil? && request.env['HTTP_ACCEPT_LANGUAGE']
+      guessed_locale = request.env['HTTP_ACCEPT_LANGUAGE'].scan(/^[a-z]{2}/).first
+    end
+
+    locale_param = I18nHelper.select_locale(
+      user_locale: user_locale,
+      param_locale: guessed_locale,
+      community_locales: com.locales,
+      community_default: default_locale,
+      all_locales: Sharetribe::AVAILABLE_LOCALES
+    )
+
+    unless locale_param == params[:locale]
+      redirect_to landing_page_with_locale_path(locale_param) and return
+    end
+
     version = CLP::LandingPageStore.released_version(cid)
-    locale_param = params[:locale]
     script_digest = Digest::MD5.hexdigest(custom_head_scripts.to_s)
 
     begin
@@ -80,7 +99,7 @@ class LandingPageController < ActionController::Metal
                 template: false,
                 public: true)
 
-        content = CLP::Caching.fetch_cached_content(cid, version, cache_meta[:digest])
+        content = CLP::Caching.fetch_cached_content(cid, version, locale_param, cache_meta[:digest])
         if content.nil?
           # This should not happen since html is cached longer than metadata
           cache_hit = false
@@ -282,8 +301,8 @@ class LandingPageController < ActionController::Metal
   def render_landing_page(default_locale:, locale_param:, structure:, cta:)
     c = community(request)
 
-    landing_page_locale, sitename = structure["settings"].values_at("locale", "sitename")
-    topbar_locale = locale_param.presence || default_locale
+    sitename = structure["settings"].values_at("sitename")
+    topbar_locale = landing_page_locale = locale_param.presence || default_locale
 
     initialize_i18n!(c&.id, landing_page_locale)
 

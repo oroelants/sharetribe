@@ -5,19 +5,19 @@
 
 %section.locations__section{id: section_id, style: "#{bg_styles[:background_image_style]} #{bg_styles[:background_color_style]}", class: "locations__section--#{bg_styles[:section_style_modifier]}"}
   .locations__content
-    %h1.locations__title= s["title"]
+    %h1.locations__title= s["title"][landing_page_locale]
     .locations__paragraph--markdown
-      = render_markdown(s["paragraph"])
+      = render_markdown(s["paragraph"][landing_page_locale])
     .locations__locations
       - num_of_locations = s["locations"].length
       - s["locations"].each do |location|
         - loc = location["location"]
-        - path = loc.is_a?(Hash) ? loc["value"] : loc
+        - path = loc.is_a?(Hash) ? loc["value"][landing_page_locale] : loc
         %div{:class => "locations__location--#{num_of_locations}"}
           %a{:href => "#{path}"}
             %div{:class => "#{section_id}__locations__location-content locations__location-content", :style => "background-image: url(#{location["background_image"]["src"]})"}
-              %h3.locations__location-title= location["title"]
+              %h3.locations__location-title= location["title"][landing_page_locale]
 
-    - if s["button_title"]
-      %a{class: "locations__button#{bg_styles[:button_modifier]} #{section_id}__locations__button#{bg_styles[:button_modifier]}", href: s['button_path']['value']}
-        = s["button_title"]
+    - if s.try(:[], "button_title").try(:[], landing_page_locale)
+      %a{class: "locations__button#{bg_styles[:button_modifier]} #{section_id}__locations__button#{bg_styles[:button_modifier]}", href: s['button_path']['value'][landing_page_locale]}
+        = s["button_title"][landing_page_locale]

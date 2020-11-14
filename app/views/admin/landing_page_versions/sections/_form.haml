@@ -2,7 +2,7 @@
   - if presenter.section_info_single_column?
     = render 'single_column', presenter: presenter, form: form
   - elsif presenter.section_hero?
-    = render 'hero', presenter: presenter, form: form
+    = render 'hero', presenter: presenter, form: form, available_locales: presenter.community.locales
   - elsif presenter.section_footer?
     = render 'footer', presenter: presenter, form: form
   - elsif presenter.section_info_multi_column?

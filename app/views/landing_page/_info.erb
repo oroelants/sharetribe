@@ -5,16 +5,16 @@
 
 <section id="<%= section_id %>" class="info__section--<%= bg_styles[:section_style_modifier] %>" style="<%= bg_styles[:background_image_style] %> <%= bg_styles[:background_color_style] %>">
   <div class="info__content--<%= bg_styles[:variation_modifier] %>">
-    <h1 class="info__title--<%= bg_styles[:variation_modifier] %>"><%= s["title"] %></h1>
+    <h1 class="info__title--<%= bg_styles[:variation_modifier] %>"><%= s["title"][landing_page_locale] %></h1>
     <% case s["variation"] %>
     <% when "single_column" %>
 
       <div class="info__paragraph--markdown">
-        <%= render_markdown_array(s["paragraph"]) %>
+        <%= render_markdown_array(s["paragraph"][landing_page_locale]) %>
       </div>
 
-      <% if s["button_title"] %>
-        <a class="info__button<%= bg_styles[:button_modifier] %> <%= section_id %>__info__button<%= bg_styles[:button_modifier] %>" href="<%= s["button_path"]["value"] %>"><%= s["button_title"] %></a>
+      <% if s.try(:[], "button_title").try(:[], landing_page_locale) %>
+        <a class="info__button<%= bg_styles[:button_modifier] %> <%= section_id %>__info__button<%= bg_styles[:button_modifier] %>" href="<%= s["button_path"]["value"][landing_page_locale] %>"><%= s["button_title"][landing_page_locale] %></a>
       <% end %>
 
     <% when "multi_column" %>
@@ -41,23 +41,23 @@
                   <% end %>
                 </div>
               <% end %>
-              <h2 class="info__column-title"><%= c["title"] %></h2>
+              <h2 class="info__column-title"><%= c["title"][landing_page_locale] %></h2>
 
               <div class="info__column-paragraph--markdown">
-                <%= render_markdown_array(c["paragraph"]) %>
+                <%= render_markdown_array(c["paragraph"][landing_page_locale]) %>
               </div>
             </div>
 
-            <% if c['button_title'].present? || c['button_path'] && c['button_path']['value'].present? %>
-              <a class="info__button<%= bg_styles[:button_modifier] %> <%= section_id %>__info__button<%= bg_styles[:button_modifier] %>" href="<%= c['button_path']['value'] %>"><%= c["button_title"]%></a>
+            <% if c.try(:[], "button_title").try(:[], landing_page_locale) || c.try(:[], "button_path_string").try(:[], landing_page_locale) %>
+              <a class="info__button<%= bg_styles[:button_modifier] %> <%= section_id %>__info__button<%= bg_styles[:button_modifier] %>" href="<%= c['button_path_string'][landing_page_locale] %>"><%= c["button_title"][landing_page_locale]%></a>
             <% end %>
           </div>
         <% end %>
       </div>
 
-      <% if s["button_title"] %>
+      <% if s.try(:[], "button_title").try(:[], landing_page_locale) %>
         <div class="info__button-container">
-          <a class="info__button<%= bg_styles[:button_modifier] %> <%= section_id %>__info__button<%= bg_styles[:button_modifier] %>" href="<%= s['button_path']['value'] %>"><%= s["button_title"]%></a>
+          <a class="info__button<%= bg_styles[:button_modifier] %> <%= section_id %>__info__button<%= bg_styles[:button_modifier] %>" href="<%= s['button_path']['value'][landing_page_locale] %>"><%= s["button_title"][landing_page_locale]%></a>
         </div>
       <% end %>
     <% end %>

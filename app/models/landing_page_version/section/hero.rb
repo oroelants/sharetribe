@@ -57,6 +57,9 @@ module LandingPageVersion::Section
       :background_image,
       :background_image_variation,
       :cta_button_type,
+    ].freeze
+
+    LOCALIZED_PARAMS = [
       :cta_button_text,
       :cta_button_url
     ].freeze
@@ -118,8 +121,11 @@ module LandingPageVersion::Section
         new(content_section)
       end
 
-      def permitted_params
-        PERMITTED_PARAMS
+      def permitted_params(locales)
+        localized_params = LOCALIZED_PARAMS.map {|param|
+          { param => locales }
+        }
+        PERMITTED_PARAMS + localized_params
       end
     end
   end

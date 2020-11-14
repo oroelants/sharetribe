@@ -23,12 +23,15 @@ module LandingPageVersion::Section
 
     EXTRA_PERMITTED_PARAMS = [
       :cta_enabled,
-      :button_title,
-      :button_path_string,
       :background_style,
       :background_color_string,
       :background_image_variation
     ]
+
+    EXTRA_LOCALIZED_PARAMS = [
+      :button_title,
+      :button_path_string
+    ].freeze
 
     before_save :check_extra_attributes
 
@@ -103,8 +106,11 @@ module LandingPageVersion::Section
     end
 
     class << self
-      def permitted_params
-        LandingPageVersion::Section::Info::PERMITTED_PARAMS + EXTRA_PERMITTED_PARAMS
+      def permitted_params(locales)
+        localized_params = EXTRA_LOCALIZED_PARAMS.map {|param|
+          { param => locales }
+        }
+        LandingPageVersion::Section::Info.permitted_params(locales) + EXTRA_PERMITTED_PARAMS + localized_params
       end
     end
   end

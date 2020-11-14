@@ -7,10 +7,10 @@
 <section id="<%= section_id %>" class="listings__section listings__section--<%= bg_styles[:section_style_modifier] %>" style="<%= bg_styles[:background_image_style] %> <%= bg_styles[:background_color_style] %>">
 
   <div class="listings__content">
-    <h1 class="listings__title"><%= s["title"] %></h1>
+    <h1 class="listings__title"><%= s["title"][landing_page_locale] %></h1>
 
     <div class="listings__paragraph--markdown">
-      <%= render_markdown_array(s["paragraph"]) %>
+      <%= render_markdown_array(s["paragraph"][landing_page_locale]) %>
     </div>
 
     <div class="listings__listings">
@@ -59,8 +59,8 @@
       <% end %>
     </div>
 
-    <% if s["button_title"] %>
-      <a class="listings__button<%= bg_styles[:button_modifier] %> <%= section_id %>__listings__button<%= bg_styles[:button_modifier] %>" href="<%= s['button_path']['value'] %>"><%= s["button_title"]%></a>
+    <% if s["button_title"][landing_page_locale] %>
+      <a class="listings__button<%= bg_styles[:button_modifier] %> <%= section_id %>__listings__button<%= bg_styles[:button_modifier] %>" href="<%= s['button_path']['value'][landing_page_locale] %>"><%= s["button_title"][landing_page_locale]%></a>
     <% end %>
   </div>
 </section>

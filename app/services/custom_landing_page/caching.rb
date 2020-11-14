@@ -7,8 +7,8 @@ module CustomLandingPage
       Rails.cache.read("clp/#{community_id}/#{version}/#{locale}/#{cta}/#{script_digest}")
     end
 
-    def fetch_cached_content(community_id, version, digest)
-      Rails.cache.read("clp/#{community_id}/#{version}/#{digest}")
+    def fetch_cached_content(community_id, version, locale, digest)
+      Rails.cache.read("clp/#{community_id}/#{version}/#{locale}/#{digest}")
     end
 
     def cache_content!(community_id, version, locale, content, cache_time, cta, script_digest)
@@ -19,7 +19,7 @@ module CustomLandingPage
         community_id, version, locale, cache_meta, cache_time, cta, script_digest)
       # cache html longer than metadata, but keyed by content (digest)
       write_cached_content!(
-        community_id, version, content, cache_meta[:digest], cache_time + 10.seconds)
+        community_id, version, locale, content, cache_meta[:digest], cache_time + 10.seconds)
       cache_meta
     end
 
@@ -35,8 +35,8 @@ module CustomLandingPage
     end
 
     ## Internal, use cache_content! instead
-    def write_cached_content!(community_id, version, content, digest, cache_time)
-      Rails.cache.write("clp/#{community_id}/#{version}/#{digest}", content, expires_in: cache_time)
+    def write_cached_content!(community_id, version, locale, content, digest, cache_time)
+      Rails.cache.write("clp/#{community_id}/#{version}/#{locale}/#{digest}", content, expires_in: cache_time)
     end
 
   end
