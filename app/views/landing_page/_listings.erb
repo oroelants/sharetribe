@@ -59,7 +59,7 @@
       <% end %>
     </div>
 
-    <% if s["button_title"][landing_page_locale] %>
+    <% if s["button_title"].try(:[], landing_page_locale) %>
       <a class="listings__button<%= bg_styles[:button_modifier] %> <%= section_id %>__listings__button<%= bg_styles[:button_modifier] %>" href="<%= s['button_path']['value'][landing_page_locale] %>"><%= s["button_title"][landing_page_locale]%></a>
     <% end %>
   </div>
